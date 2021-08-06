@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"javascript.format.enable": true,
+		"javascript.validate.enable": true,
+		"files.associations": {
+			"*.jsx": "javascriptreact",
+			"*.js": "javascriptreact"
+		},
+		"emmet.syntaxProfiles": {
+			"javascript": "jsx"
+		}
+	}
+}
