@@ -8,9 +8,9 @@
 
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import type { Node } from 'react';
-// import HomeScreen from './src/components/HomeScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import type {Node} from 'react';
+import HomeScreen from './src/components/HomeScreen';
 import ProfileScreen from './src/components/ProfileScreen';
 import {
   SafeAreaView,
@@ -22,10 +22,8 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
-import { createStackNavigator } from '@react-navigation/stack';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
@@ -41,13 +39,13 @@ const App: () => Node = () => {
       <Stack.Navigator>
         <Stack.Screen
           name="HomeScreen"
-          component={ProfileScreen}
-          options={{ title: 'Welcome' }}
+          component={HomeScreen}
+          options={{title: 'Welcome'}}
         />
         <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
-          options={{ title: 'Welcome to prodile' }}
+          options={{title: 'Welcome to prodile'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

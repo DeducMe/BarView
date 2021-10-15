@@ -1,110 +1,123 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
-import YaMap, { Marker, Geocoder } from 'react-native-yamap';
-import { PLUS, MINUS, MARKER } from '../images'
-import RNFS from 'react-native-fs'
+import React, {useEffect, useState, useRef} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import YaMap, {Marker, Geocoder} from 'react-native-yamap';
+import {PLUS, MINUS, MARKER} from '../images';
+import RNFS from 'react-native-fs';
 // Geocoder.geoToAddress({ lat: 37.597576, lon: 55.771899 })
 //   .then(data => console.log(data))
-const path = '/Users/alexanderzakalsky/Documents/projects/BarView'
+const path = '/Users/alexanderzakalsky/projects/Bar/front';
 
 const route = {
-  start: { lat: 0, lon: 0 },
-  end: { lat: 10, lon: 10 },
+  start: {lat: 0, lon: 0},
+  end: {lat: 10, lon: 10},
 };
 
 export default function ProfileScreen() {
-  const [markers, setMarkers] = useState([])
-  const [writeResult, setWriteResult] = useState([])
-  const [chosenId, setChosenId] = useState(121926463456)
-  const [markersLoading, setMarkersLoading] = useState(false)
+  const [markers, setMarkers] = useState([]);
+  const [writeResult, setWriteResult] = useState([]);
+  const [chosenId, setChosenId] = useState(121926463456);
+  const [markersLoading, setMarkersLoading] = useState(false);
   YaMap.init('6900635a-0c4f-4265-a600-7e9476e079f1');
   Geocoder.init('8f3ed51c-817e-4946-ac9f-ed375107d4f3');
   const map = useRef(null);
   useEffect(() => {
-    if (map.current.setCenter) map.current.setCenter({ "lat": 55.7221513871823, "lon": 37.63555933517637 }, 10, 0, 0, 0)
-    readOrganizationsJSON()
-
-  }, [])
-
-
+    if (map.current.setCenter)
+      map.current.setCenter(
+        {lat: 55.7221513871823, lon: 37.63555933517637},
+        10,
+        0,
+        0,
+        0,
+      );
+    readOrganizationsJSON();
+    // for (let index = 0; index < 2; index++) {
+    //   getOrganizationsJSON(index);
+    // }
+  }, []);
 
   useEffect(() => {
-    setMarkersLoading(false)
-  }, [markers])
+    setMarkersLoading(false);
+  }, [markers]);
 
   function addNewOrganizationMarker(organization) {
     // console.log(organization)
-    setMarkers(markers.concat(organization))
+    setMarkers(markers.concat(organization));
   }
 
   function getCurrentPosition() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       if (map.current) {
-        map.current.getCameraPosition((position) => {
+        map.current.getCameraPosition(position => {
           resolve(position);
         });
       }
     });
   }
 
-  // useEffect(() => {
-  //   let json = JSON.stringify(writeResult);
-  //   RNFS.writeFile(`${path}/myjsonfile.json`, json, 'utf8')
-  //     .then((success) => {
-  //       console.log('FILE WRITTEN!');
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, [writeResult])
+  useEffect(() => {
+    if (writeResult.length === 0) return;
+    let json = JSON.stringify(writeResult, 0, 2);
+    RNFS.writeFile(`${path}/myjsonfile.json`, json, 'utf8')
+      .then(success => {
+        console.log('FILE WRITTEN!');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [writeResult]);
 
-  // function getOrganizationsJSON(index){
-  //   fetch(`https://search-maps.yandex.ru/v1/?text=Бар&type=biz&results=2000&skip=${index * 500}&lang=ru_RU&ll=37.6,55.7&spn=0.8,0.8&&apikey=c63cba92-1973-49ab-9c45-943c69b15467`)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       const wR = []
+  function getOrganizationsJSON(index) {
+    fetch(
+      `https://search-maps.yandex.ru/v1/?text=Бар&type=biz&results=2000&skip=${
+        index * 10
+      }&lang=ru_RU&ll=37.6,55.7&spn=0.8,0.8&&apikey=c63cba92-1973-49ab-9c45-943c69b15467`,
+    )
+      .then(response => response.json())
+      .then(data => {
+        const wR = [];
 
-  //       data.features.map(item => {
-  //         wR.push(item)
-  //       })
+        data.features.map(item => {
+          wR.push(item);
+        });
 
-  //       setWriteResult(writeResult.concat(wR))
-  //     })
-  // }
+        setWriteResult(writeResult.concat(wR));
+      });
+  }
 
   function readOrganizationsJSON() {
     RNFS.readFile(`${path}/myjsonfile.json`, 'utf8')
-      .then((file) => {
-        const data = JSON.parse(file)
-        data.length = 50
-        getOrganizations(data)
+      .then(file => {
+        const data = JSON.parse(file);
+        data.length = 50;
+        getOrganizations(data);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
-
   }
 
   function getOrganizations(data) {
-    setMarkersLoading(true)
+    setMarkersLoading(true);
 
-    const result = []
+    const result = [];
 
     data.map(item => {
       result.push({
         info: item.properties.CompanyMetaData.address,
-        coordinates: { lon: item.geometry.coordinates[0], lat: item.geometry.coordinates[1] },
-        id: item.properties.CompanyMetaData.id
-      })
-    })
+        coordinates: {
+          lon: item.geometry.coordinates[0],
+          lat: item.geometry.coordinates[1],
+        },
+        id: item.properties.CompanyMetaData.id,
+      });
+    });
 
-    setMarkers(markers.concat(result))
-
+    setMarkers(markers.concat(result));
   }
 
   function openMarkerInfo(id) {
-    console.log("changed to ", id)
-    setChosenId(id)
+    console.log('changed to ', id);
+    setChosenId(id);
   }
 
   async function zoomUp() {
@@ -112,44 +125,30 @@ export default function ProfileScreen() {
     if (map.current) {
       map.current.setZoom(position.zoom * 1.1, 0.1);
     }
-  };
+  }
 
   async function zoomDown() {
     const position = await getCurrentPosition();
     if (map.current) {
       map.current.setZoom(position.zoom * 0.9, 0.1);
     }
-  };
+  }
   return (
-    <View style={{ flex: 1, width: '100%', height: '100%' }}>
+    <View style={{flex: 1, width: '100%', height: '100%'}}>
       <YaMap
         ref={map}
         fitAllMarkers
-        showUserPosition
         // onMapPress={(event) => addNewMarker(event.nativeEvent)}
-        userLocationIcon={{ uri: 'https://www.clipartmax.com/png/middle/180-1801760_pin-png.png' }}
-        style={{ flex: 1, width: '100%', height: '100%' }}
-      >
+
+        style={{flex: 1, width: '100%', height: '100%'}}>
         {!markersLoading &&
-          markers.map((item, index) =>
-            <View key={index}>
-              {chosenId === item.id && console.log('cringe')}
-              {chosenId !== item.id ?
-                <View style={{ width: 10, height: 10, marginTop: 200, backgroundColor: '#fff' }}>
-
-                  <Marker onPress={openMarkerInfo.bind(this, item.id)} source={MARKER} point={item.coordinates} key={index}>
-
-                  </Marker>
-                </View>
-
-                : <Marker onPress={openMarkerInfo.bind(this, item.id)} source={MARKER} point={item.coordinates} key={index}>
-
-                </Marker>
-              }
-
-            </View>
-          )
-        }
+          markers.map((item, index) => (
+            <Marker
+              onPress={openMarkerInfo.bind(this, item.id)}
+              source={MARKER}
+              point={item.coordinates}
+              key={index}></Marker>
+          ))}
       </YaMap>
       <View style={styles.buttonsBlock}>
         <TouchableOpacity onPress={zoomUp} style={styles.buttonWrapper}>
@@ -157,17 +156,14 @@ export default function ProfileScreen() {
             <Image source={PLUS} style={styles.icon} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={zoomDown}
-          style={styles.buttonWrapper}>
+        <TouchableOpacity onPress={zoomDown} style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Image source={MINUS} style={styles.icon} />
           </View>
         </TouchableOpacity>
       </View>
     </View>
-
-  )
+  );
 }
 
 const styles = StyleSheet.create({

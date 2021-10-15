@@ -1,10 +1,12 @@
-import React from 'react'
-import { View, Text, Touchable, TouchableOpacity } from 'react-native'
+import React from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({navigation}) {
   return (
     <View>
-      <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}><Text>Cringe</Text></TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen')}>
+        <Text>Cringe</Text>
+      </TouchableOpacity>
     </View>
-  )
+  );
 }
