@@ -1,7 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import YaMap, {Marker, Geocoder} from 'react-native-yamap';
+import {Geocoder} from 'react-native-yamap';
 import {PLUS, MINUS, MARKER} from '../images';
+import MapView, {Marker} from 'react-native-maps';
 import RNFS from 'react-native-fs';
 // Geocoder.geoToAddress({ lat: 37.597576, lon: 55.771899 })
 //   .then(data => console.log(data))
@@ -12,12 +13,12 @@ const route = {
   end: {lat: 10, lon: 10},
 };
 
-export default function ProfileScreen() {
+export default function ProfileScreen({navigation}) {
   const [markers, setMarkers] = useState([]);
   const [writeResult, setWriteResult] = useState([]);
   const [chosenId, setChosenId] = useState(121926463456);
   const [markersLoading, setMarkersLoading] = useState(false);
-  YaMap.init('6900635a-0c4f-4265-a600-7e9476e079f1');
+
   Geocoder.init('8f3ed51c-817e-4946-ac9f-ed375107d4f3');
   const map = useRef(null);
   useEffect(() => {
@@ -103,10 +104,10 @@ export default function ProfileScreen() {
 
     data.map(item => {
       result.push({
-        info: item.properties.CompanyMetaData.address,
+        info: item.properties.CompanyMetaData,
         coordinates: {
-          lon: item.geometry.coordinates[0],
-          lat: item.geometry.coordinates[1],
+          longitude: item.geometry.coordinates[0],
+          latitude: item.geometry.coordinates[1],
         },
         id: item.properties.CompanyMetaData.id,
       });
@@ -115,48 +116,65 @@ export default function ProfileScreen() {
     setMarkers(markers.concat(result));
   }
 
-  function openMarkerInfo(id) {
-    console.log('changed to ', id);
-    setChosenId(id);
+  function openMarkerInfo(item) {
+    console.log(item);
+    navigation.navigate('OrganizationScreen', {organization: item});
   }
 
-  async function zoomUp() {
-    const position = await getCurrentPosition();
-    if (map.current) {
-      map.current.setZoom(position.zoom * 1.1, 0.1);
+  async function onZoomPress(where) {
+    if (!map && !map.current) {
+      return;
     }
-  }
 
-  async function zoomDown() {
-    const position = await getCurrentPosition();
-    if (map.current) {
-      map.current.setZoom(position.zoom * 0.9, 0.1);
+    const camera = await map.current.getCamera();
+    if (where === 'in') {
+      if (Platform.OS === 'ios') {
+        camera.altitude /= 2;
+      } else {
+        camera.zoom = camera.zoom + 1;
+      }
+    } else {
+      if (Platform.OS === 'ios') {
+        camera.altitude *= 2;
+      } else {
+        camera.zoom = camera.zoom - 1;
+      }
     }
+    map.current.animateCamera(camera, {duration: 200});
   }
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
-      <YaMap
+      <MapView
         ref={map}
         fitAllMarkers
-        // onMapPress={(event) => addNewMarker(event.nativeEvent)}
-
+        zoomEnabled={true}
+        initialRegion={{
+          latitude: 55.746953111304435,
+          longitude: 37.615575661165195,
+          latitudeDelta: 0.5,
+          longitudeDelta: 0.5,
+        }}
         style={{flex: 1, width: '100%', height: '100%'}}>
         {!markersLoading &&
           markers.map((item, index) => (
             <Marker
-              onPress={openMarkerInfo.bind(this, item.id)}
+              onPress={openMarkerInfo.bind(this, item)}
               source={MARKER}
-              point={item.coordinates}
+              coordinate={item.coordinates}
               key={index}></Marker>
           ))}
-      </YaMap>
+      </MapView>
       <View style={styles.buttonsBlock}>
-        <TouchableOpacity onPress={zoomUp} style={styles.buttonWrapper}>
+        <TouchableOpacity
+          onPress={() => onZoomPress('in')}
+          style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Image source={PLUS} style={styles.icon} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={zoomDown} style={styles.buttonWrapper}>
+        <TouchableOpacity
+          onPress={() => onZoomPress('out')}
+          style={styles.buttonWrapper}>
           <View style={styles.button}>
             <Image source={MINUS} style={styles.icon} />
           </View>
