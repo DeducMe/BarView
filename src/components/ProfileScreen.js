@@ -21,7 +21,7 @@ export default function ProfileScreen({navigation}) {
 
   Geocoder.init('8f3ed51c-817e-4946-ac9f-ed375107d4f3');
   const map = useRef(null);
-  useEffect(() => {
+  useEffect(async () => {
     if (map.current.setCenter)
       map.current.setCenter(
         {lat: 55.7221513871823, lon: 37.63555933517637},
@@ -30,10 +30,14 @@ export default function ProfileScreen({navigation}) {
         0,
         0,
       );
-    readOrganizationsJSON();
-    // for (let index = 0; index < 2; index++) {
-    //   getOrganizationsJSON(index);
-    // }
+    // readOrganizationsJSON();
+    let newWr = [];
+    for (let index = 0; index < 4; index++) {
+      const a = await getOrganizationsJSON(index);
+      newWr = newWr.concat(a);
+      console.log(newWr);
+    }
+    setWriteResult(newWr);
   }, []);
 
   useEffect(() => {
@@ -68,25 +72,24 @@ export default function ProfileScreen({navigation}) {
   }, [writeResult]);
 
   function getOrganizationsJSON(index) {
-    fetch(
+    return fetch(
       `https://search-maps.yandex.ru/v1/?text=Бар&type=biz&results=2000&skip=${
-        index * 10
+        index * 500
       }&lang=ru_RU&ll=37.6,55.7&spn=0.8,0.8&&apikey=c63cba92-1973-49ab-9c45-943c69b15467`,
     )
       .then(response => response.json())
       .then(data => {
         const wR = [];
 
-        data.features.map(item => {
+        data?.features?.map(item => {
           wR.push(item);
         });
-
-        setWriteResult(writeResult.concat(wR));
+        return wR;
       });
   }
 
   function readOrganizationsJSON() {
-    RNFS.readFile(`${path}/myjsonfile.json`, 'utf8')
+    RNFS.readFile(`${path}/dataTest.json`, 'utf8')
       .then(file => {
         const data = JSON.parse(file);
         data.length = 50;
@@ -117,7 +120,6 @@ export default function ProfileScreen({navigation}) {
   }
 
   function openMarkerInfo(item) {
-    console.log(item);
     navigation.navigate('OrganizationScreen', {organization: item});
   }
 

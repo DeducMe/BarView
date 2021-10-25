@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import HomeScreen from './src/components/HomeScreen';
 import ProfileScreen from './src/components/ProfileScreen';
 import OrganizationScreen from './src/components/OrganizationScreen/OrganizationScreen';
 
@@ -13,11 +12,6 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="HomeScreen"
-          component={HomeScreen}
-          options={{title: 'Welcome'}}
-        />
         <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
