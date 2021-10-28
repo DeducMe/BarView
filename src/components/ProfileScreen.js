@@ -1,8 +1,16 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import {Geocoder} from 'react-native-yamap';
 import {PLUS, MINUS, MARKER} from '../images';
 import MapView, {Marker} from 'react-native-maps';
+import markersData from '../dataTest.json';
 import RNFS from 'react-native-fs';
 // Geocoder.geoToAddress({ lat: 37.597576, lon: 55.771899 })
 //   .then(data => console.log(data))
@@ -30,14 +38,14 @@ export default function ProfileScreen({navigation}) {
         0,
         0,
       );
-    // readOrganizationsJSON();
-    let newWr = [];
-    for (let index = 0; index < 4; index++) {
-      const a = await getOrganizationsJSON(index);
-      newWr = newWr.concat(a);
-      console.log(newWr);
-    }
-    setWriteResult(newWr);
+    readOrganizationsJSON();
+    // let newWr = [];
+    // for (let index = 0; index < 4; index++) {
+    //   const a = await getOrganizationsJSON(index);
+    //   newWr = newWr.concat(a);
+    //   console.log(newWr);
+    // }
+    // setWriteResult(newWr);
   }, []);
 
   useEffect(() => {
@@ -89,15 +97,10 @@ export default function ProfileScreen({navigation}) {
   }
 
   function readOrganizationsJSON() {
-    RNFS.readFile(`${path}/dataTest.json`, 'utf8')
-      .then(file => {
-        const data = JSON.parse(file);
-        data.length = 50;
-        getOrganizations(data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    const data = markersData;
+    console.log(data);
+    data.length = 50;
+    getOrganizations(markersData);
   }
 
   function getOrganizations(data) {
@@ -166,12 +169,22 @@ export default function ProfileScreen({navigation}) {
               key={index}></Marker>
           ))}
       </MapView>
+      {markersLoading && (
+        <View
+          style={{
+            position: 'absolute',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <ActivityIndicator></ActivityIndicator>
+        </View>
+      )}
       <View style={styles.buttonsBlock}>
         <TouchableOpacity
           onPress={() => onZoomPress('in')}
           style={styles.buttonWrapper}>
           <View style={styles.button}>
-            <Image source={PLUS} style={styles.icon} />
+            <Image source={require('../images/plus.png')} style={styles.icon} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity

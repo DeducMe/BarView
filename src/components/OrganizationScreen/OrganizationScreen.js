@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,7 @@ const {width} = Dimensions.get('window');
 export default function OrganizationScreen({navigation, route}) {
   const [favourite, setFavourite] = useState(false);
   const [hoursInfoOpen, setHoursInfoOpen] = useState(false);
+  const photoList = useRef();
   const {
     name,
     organizationImages,
@@ -37,11 +38,13 @@ export default function OrganizationScreen({navigation, route}) {
   const getAddress = () => {
     return address.replace('Россия,', '').replace('Москва,', '').trim();
   };
+
   const renderItem = ({item}) => {
     return (
       <Image style={{width: width, height: 220}} source={{uri: item}}></Image>
     );
   };
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.mainHeaderContainer}>
@@ -57,6 +60,8 @@ export default function OrganizationScreen({navigation, route}) {
           </View>
         )}
         <FlatList
+          ref={photoList}
+          scrollEventThrottle={1}
           keyExtractor={(item, index) => index}
           horizontal
           data={organizationImages}

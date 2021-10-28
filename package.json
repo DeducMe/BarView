@@ -10,19 +10,21 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-community/masked-view": "^0.1.11",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-navigation/native": "^6.0.1",
     "@react-navigation/stack": "^6.0.1",
+    "debug": "^4.3.2",
     "fs": "^0.0.1-security",
     "react": "17.0.1",
     "react-native": "0.64.2",
     "react-native-fs": "^2.18.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-maps": "^0.29.3",
+    "react-native-material-design": "^0.3.7",
     "react-native-reanimated": "^2.2.0",
     "react-native-safe-area-context": "^3.3.0",
     "react-native-screens": "^3.5.0",
+    "react-native-windows": "^0.66.2",
     "react-native-yamap": "^1.1.0-beta",
     "react-navigation": "^4.4.4"
   },
@@ -33,10 +35,26 @@
     "babel-jest": "^26.6.3",
     "eslint": "7.14.0",
     "jest": "^26.6.3",
+    "jetifier": "^2.0.0",
     "metro-react-native-babel-preset": "^0.64.0",
     "react-test-renderer": "17.0.1"
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "description": "bar App",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeducMe/BarView.git"
+  },
+  "keywords": [
+    "bar"
+  ],
+  "author": "Alexander",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DeducMe/BarView/issues"
+  },
+  "homepage": "https://github.com/DeducMe/BarView#readme"
 }
