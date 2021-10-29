@@ -13,10 +13,12 @@ import {
   OPEN_MENU_BTN as openMenuBtn,
   REVERSED_OPEN_MENU_BTN as reversedOpenMenuBtn,
 } from '../../images/index';
+import {getTodayHours} from '../../common/dateUtils';
 import OrganizationFeatures from './OrganizationFeatures';
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import globalStyles, {mainInfo as styles} from './styles';
+import {ScrollView} from 'react-native-gesture-handler';
 const {width} = Dimensions.get('window');
 
 export default function OrganizationScreen({navigation, route}) {
@@ -46,7 +48,7 @@ export default function OrganizationScreen({navigation, route}) {
   };
 
   return (
-    <View style={styles.mainContainer}>
+    <ScrollView style={styles.mainContainer}>
       <View style={styles.mainHeaderContainer}>
         <Text style={styles.mainHeaderText}>{name}</Text>
         <TouchableOpacity onPress={() => setFavourite(!favourite)}>
@@ -70,14 +72,56 @@ export default function OrganizationScreen({navigation, route}) {
       </View>
       <View style={styles.mainInfoBlockContainer}>
         <View style={styles.mainInfoBlockLeftContainer}>
-          <Text style={styles.mainInfoBlockAddress}>{getAddress()}</Text>
+          <Text
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            style={styles.mainInfoBlockAddress}>
+            {getAddress()}
+          </Text>
+        </View>
+        {rating && (
+          <View style={styles.mainInfoBlockRightContainer}>
+            <View
+              style={[
+                globalStyles.flexRow,
+                globalStyles.justifyBetween,
+                globalStyles.alignCenter,
+              ]}>
+              <MaskedView
+                maskElement={
+                  <View
+                    style={{
+                      width: 19 * parseFloat(rating?.replace(',', '.')),
+                      height: 19,
+                      backgroundColor: '#fff',
+                    }}></View>
+                }>
+                <View style={globalStyles.flexRow}>
+                  <Image style={styles.starIcon} source={starFull}></Image>
+                  <Image style={styles.starIcon} source={starFull}></Image>
+                  <Image style={styles.starIcon} source={starFull}></Image>
+                  <Image style={styles.starIcon} source={starFull}></Image>
+                  <Image style={styles.starIcon} source={starFull}></Image>
+                </View>
+              </MaskedView>
+              <View style={[globalStyles.flexRow, {position: 'absolute'}]}>
+                <Image style={styles.starIcon} source={starEmpty}></Image>
+                <Image style={styles.starIcon} source={starEmpty}></Image>
+                <Image style={styles.starIcon} source={starEmpty}></Image>
+                <Image style={styles.starIcon} source={starEmpty}></Image>
+                <Image style={styles.starIcon} source={starEmpty}></Image>
+              </View>
+              <Text style={styles.ratingText}>{rating}</Text>
+            </View>
+          </View>
+        )}
+      </View>
+      {!!Hours && (
+        <View style={{marginHorizontal: 15, marginBottom: 10}}>
           <TouchableOpacity
             style={styles.hoursInfo}
             onPress={() => setHoursInfoOpen(!hoursInfoOpen)}>
-            <Text>{`Работает до ${Hours.Availabilities[0].Intervals[0].to.slice(
-              0,
-              -3,
-            )}`}</Text>
+            <Text>{`Работает до ${getTodayHours(Hours)}`}</Text>
             <Image
               style={styles.openMenuBtn}
               source={
@@ -85,7 +129,7 @@ export default function OrganizationScreen({navigation, route}) {
               }></Image>
           </TouchableOpacity>
           {hoursInfoOpen && (
-            <View>
+            <View style={{paddingVertical: 5}}>
               {Hours.Availabilities[0].Everyday ? (
                 <View
                   style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
@@ -198,45 +242,10 @@ export default function OrganizationScreen({navigation, route}) {
             </View>
           )}
         </View>
-        <View style={styles.mainInfoBlockRightContainer}>
-          {console.log(24 * parseFloat(rating.replace(',', '.')))}
-          <View
-            style={[
-              globalStyles.flexRow,
-              globalStyles.alignCenter,
-              globalStyles.justifyBetween,
-            ]}>
-            <MaskedView
-              maskElement={
-                <View
-                  style={{
-                    width: 24 * parseFloat(rating.replace(',', '.')),
-                    height: 24,
-                    backgroundColor: '#fff',
-                  }}></View>
-              }>
-              <View style={globalStyles.flexRow}>
-                <Image style={styles.starIcon} source={starFull}></Image>
-                <Image style={styles.starIcon} source={starFull}></Image>
-                <Image style={styles.starIcon} source={starFull}></Image>
-                <Image style={styles.starIcon} source={starFull}></Image>
-                <Image style={styles.starIcon} source={starFull}></Image>
-              </View>
-            </MaskedView>
-            <View style={[globalStyles.flexRow, {position: 'absolute'}]}>
-              <Image style={styles.starIcon} source={starEmpty}></Image>
-              <Image style={styles.starIcon} source={starEmpty}></Image>
-              <Image style={styles.starIcon} source={starEmpty}></Image>
-              <Image style={styles.starIcon} source={starEmpty}></Image>
-              <Image style={styles.starIcon} source={starEmpty}></Image>
-            </View>
-            <Text style={styles.ratingText}>{rating}</Text>
-          </View>
-        </View>
-      </View>
+      )}
       {!!features && (
         <OrganizationFeatures features={features}></OrganizationFeatures>
       )}
-    </View>
+    </ScrollView>
   );
 }

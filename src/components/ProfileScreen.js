@@ -98,8 +98,6 @@ export default function ProfileScreen({navigation}) {
 
   function readOrganizationsJSON() {
     const data = markersData;
-    console.log(data);
-    data.length = 50;
     getOrganizations(markersData);
   }
 
@@ -164,7 +162,7 @@ export default function ProfileScreen({navigation}) {
           markers.map((item, index) => (
             <Marker
               onPress={openMarkerInfo.bind(this, item)}
-              source={MARKER}
+              image={MARKER}
               coordinate={item.coordinates}
               key={index}></Marker>
           ))}

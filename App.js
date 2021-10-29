@@ -1,8 +1,11 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
+import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import ProfileScreen from './src/components/ProfileScreen';
+
 import OrganizationScreen from './src/components/OrganizationScreen/OrganizationScreen';
+import OrganizationHeader from './src/components/OrganizationScreen/OrganizationHeader';
 
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -15,12 +18,16 @@ const App = () => {
         <Stack.Screen
           name="ProfileScreen"
           component={ProfileScreen}
-          options={{title: 'Welcome to prodile'}}
+          options={{header: () => null}}
         />
         <Stack.Screen
           name="OrganizationScreen"
           component={OrganizationScreen}
-          options={{title: 'Organization'}}
+          options={{
+            header: navigation => (
+              <OrganizationHeader navigation={navigation} />
+            ),
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

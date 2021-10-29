@@ -30,16 +30,17 @@ export const mainInfo = StyleSheet.create({
     height: 70,
   },
   mainInfoBlockContainer: {
-    marginVertical: 10,
+    marginTop: 10,
+    marginBottom: 5,
     marginHorizontal: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   mainInfoBlockLeftContainer: {
-    width: '55%',
+    width: '60%',
   },
   mainInfoBlockRightContainer: {
-    width: '40%',
+    width: '35%',
     maxWidth: 145,
   },
   mainInfoBlockAddress: {
@@ -57,12 +58,13 @@ export const mainInfo = StyleSheet.create({
     height: 5,
   },
   ratingText: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '500',
+    alignSelf: 'flex-end',
   },
   starIcon: {
-    width: 24,
-    height: 24,
+    width: 19,
+    height: 19,
   },
 });
 
@@ -84,10 +86,10 @@ export const organizationFeatures = StyleSheet.create({
   },
   kitchenText: {
     marginTop: 10,
-    fontSize: 12,
+    fontSize: 11,
   },
   menuFeatureTextKey: {
-    fontSize: 13,
+    fontSize: 12,
     maxWidth: '70%',
   },
   menuFeatureTextValue: {
@@ -95,12 +97,12 @@ export const organizationFeatures = StyleSheet.create({
     maxWidth: 120,
   },
   icon: {width: 18, height: 18, marginRight: 5},
-  normalizedMenuFeaturesContainer: {width: '55%'},
-  normalizedElseFeaturesContainer: {width: '40%', maxWidth: 145},
+  normalizedMenuFeaturesContainer: {width: '60%'},
+  normalizedElseFeaturesContainer: {width: '35%', maxWidth: 145},
   elseFeature: {
     marginBottom: 5,
   },
   elseFeatureText: {
-    fontSize: 14,
+    fontSize: 12,
   },
 });
