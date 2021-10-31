@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image} from 'react-native';
-import globalStyles, {organizationFeatures as styles} from './styles';
+import globalStyles, {organizationFeatures as styles} from '../styles';
 import {
   WIFI as wifiIcon,
   CARD_PAYMENT as cardPaymentIcon,
   COFFEE_OUT as coffeeOutIcon,
   CRAFT_BEER as craftBeerIcon,
   BUSINESS_LUNCH as businessLunchIcon,
-} from '../../images/index';
+} from '../../../images/index';
 
 export default function OrganizationFeatures({features}) {
   const [normalizedFeatures, setNormalizedFeatures] = useState(null);

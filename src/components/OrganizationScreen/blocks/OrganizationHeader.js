@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {SafeAreaView, Image, TouchableOpacity, View, Text} from 'react-native';
-import {GO_BACK as goBackIcon} from '../../images/index';
-import {mainInfo as styles} from './styles';
+import {GO_BACK as goBackIcon} from '../../../images/index';
+import {mainInfo as styles} from '../styles';
 import {
   STAR_FULL as starFull,
   STAR_EMPTY as starEmpty,
-} from '../../images/index';
+} from '../../../images/index';
 
 export default function OrganizationHeader({navigation, name}) {
   const [favourite, setFavourite] = useState(false);
