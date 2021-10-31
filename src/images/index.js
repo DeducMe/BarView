@@ -13,3 +13,5 @@ export const CRAFT_BEER = require('./smallIcons/beer.png');
 export const CARD_PAYMENT = require('./smallIcons/cardPayment.png');
 export const COFFEE_OUT = require('./smallIcons/coffeeOut.png');
 export const BUSINESS_LUNCH = require('./smallIcons/lunch.png');
+
+export const WORK_IN_PROGRESS = require('./bigIcons/workInProgress.png');

@@ -19,7 +19,7 @@ export default function OrganizationPhotosCarousel({organizationImages, logo}) {
       <Image
         style={{
           width: width,
-          height: imageFullOpened ? 500 : 220,
+          height: imageFullOpened ? 515 : 220,
           resizeMode: imageFullOpened ? 'contain' : 'cover',
           backgroundColor: '#000',
         }}
@@ -30,13 +30,13 @@ export default function OrganizationPhotosCarousel({organizationImages, logo}) {
   return (
     <View style={{position: 'relative'}}>
       {!!logo && (
-        <View style={[styles.logo, imageFullOpened && {top: 410}]}>
+        <View style={[styles.logo, imageFullOpened && {top: 425}]}>
           <Image style={styles.logoImage} source={{uri: logo}} />
         </View>
       )}
       <TouchableOpacity
         onPress={() => setImageFullOpened(!imageFullOpened)}
-        style={[styles.fullImageBtn, imageFullOpened && {top: 465}]}>
+        style={[styles.fullImageBtn, imageFullOpened && {top: 480}]}>
         <Image style={styles.fullImageBtnIcon} source={fullScreenBtnIcon} />
       </TouchableOpacity>
       <FlatList

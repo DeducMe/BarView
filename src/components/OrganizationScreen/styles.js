@@ -15,6 +15,13 @@ export const mainInfo = StyleSheet.create({
     position: 'relative',
     backgroundColor: '#fff',
   },
+  blockSeparator: {
+    alignSelf: 'center',
+    marginVertical: 15,
+    height: 1,
+    width: '80%',
+    backgroundColor: '#C4C4C4',
+  },
   logo: {
     position: 'absolute',
     top: 130,
@@ -40,6 +47,8 @@ export const mainInfo = StyleSheet.create({
     height: 15,
   },
   logoImage: {
+    borderRadius: 15,
+
     width: 70,
     zIndex: 1,
     height: 70,
@@ -120,5 +129,17 @@ export const organizationFeatures = StyleSheet.create({
   },
   elseFeatureText: {
     fontSize: 12,
+  },
+});
+export const navigationTabs = StyleSheet.create({
+  navigationTabBtn: {
+    width: 120,
+    backgroundColor: '#F4F4F4',
+    padding: 10,
+    borderRadius: 5,
+  },
+  navigationTabText: {
+    textAlign: 'center',
+    fontWeight: '500',
   },
 });

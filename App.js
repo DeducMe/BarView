@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import ProfileScreen from './src/components/ProfileScreen';
 
 import OrganizationScreen from './src/components/OrganizationScreen';
-import OrganizationHeader from './src/components/OrganizationScreen/blocks/OrganizationHeader';
+import OrganizationHeader from './src/components/OrganizationScreen/OrganizationHeader';
 
 import {createStackNavigator} from '@react-navigation/stack';
 

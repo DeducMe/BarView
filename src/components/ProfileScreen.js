@@ -164,6 +164,7 @@ export default function ProfileScreen({navigation}) {
               onPress={openMarkerInfo.bind(this, item)}
               image={MARKER}
               coordinate={item.coordinates}
+              style={{width: 26, height: 28}}
               key={index}></Marker>
           ))}
       </MapView>
