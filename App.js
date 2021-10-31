@@ -23,11 +23,14 @@ const App = () => {
         <Stack.Screen
           name="OrganizationScreen"
           component={OrganizationScreen}
-          options={{
+          options={({route}) => ({
             header: navigation => (
-              <OrganizationHeader navigation={navigation} />
+              <OrganizationHeader
+                name={route.params.organization.info.name}
+                navigation={navigation}
+              />
             ),
-          }}
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>

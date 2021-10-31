@@ -15,16 +15,17 @@ export default function OrganizationFeatures({features}) {
   const {menuFeatures, elseFeatures} = features;
 
   const normalizeFeatures = () => {
-    let normalizedMenuFeatures = menuFeatures;
+    let normalizedMenuFeatures = menuFeatures.filter(
+      (v, i, a) => a.findIndex(t => t === v) === i,
+    );
     const kitchen = normalizedMenuFeatures.find(item => item.includes('Кухня'));
-
-    if (kitchen)
+    if (kitchen) {
       normalizedMenuFeatures.splice(
         normalizedMenuFeatures.findIndex(item => item === kitchen),
         1,
       );
+    }
     normalizedMenuFeatures = normalizedMenuFeatures
-      .filter((v, i, a) => a.findIndex(t => t === v) === i)
       .sort((a, b) => {
         const sortWords = ['Цены', 'Средний счёт', 'Цена бокала'];
         for (word of sortWords) {

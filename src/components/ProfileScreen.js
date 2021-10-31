@@ -97,8 +97,8 @@ export default function ProfileScreen({navigation}) {
   }
 
   function readOrganizationsJSON() {
-    const data = markersData;
     getOrganizations(markersData);
+    console.log(markersData.length);
   }
 
   function getOrganizations(data) {

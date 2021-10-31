@@ -24,6 +24,21 @@ export const mainInfo = StyleSheet.create({
     padding: 5,
     backgroundColor: '#fff',
   },
+  fullImageBtn: {
+    position: 'absolute',
+    top: 184,
+    right: 10,
+    zIndex: 1,
+    borderRadius: 60,
+
+    padding: 5,
+    backgroundColor: '#fff',
+  },
+  fullImageBtnIcon: {
+    width: 15,
+    zIndex: 1,
+    height: 15,
+  },
   logoImage: {
     width: 70,
     zIndex: 1,
@@ -42,6 +57,7 @@ export const mainInfo = StyleSheet.create({
   mainInfoBlockRightContainer: {
     width: '35%',
     maxWidth: 145,
+    marginBottom: 5,
   },
   mainInfoBlockAddress: {
     fontSize: 14,

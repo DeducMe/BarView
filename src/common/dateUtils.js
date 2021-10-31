@@ -14,12 +14,12 @@ export const getTodayHours = Hours => {
   day -= 1;
   const todayDayHours = Hours.Availabilities.find(item => item[weekDays[day]]);
 
-  if (todayDayHours) return todayDayHours?.Intervals[0].to.slice(0, -3);
-  else
-    return (
-      Hours.Availabilities.find(item => item['Everyday']).Intervals[0].to.slice(
-        0,
-        -3,
-      ) || null
-    );
+  if (todayDayHours) return todayDayHours?.Intervals[0]?.to.slice(0, -3);
+  else {
+    const everydayHours = Hours.Availabilities?.find(item => item['Everyday']);
+    if (everydayHours?.TwentyFourHours) return '24 hours';
+    if (!everydayHours?.Intervals) return null;
+
+    return everydayHours ? everydayHours.Intervals[0]?.to.slice(0, -3) : null;
+  }
 };
