@@ -7,7 +7,7 @@ import {
 } from '../../../images/index';
 export default function WorkingHours({todayHours, Hours}) {
   const [hoursInfoOpen, setHoursInfoOpen] = useState(false);
-
+  console.log(Hours);
   return (
     <View style={{marginBottom: 10}}>
       <TouchableOpacity
@@ -28,92 +28,63 @@ export default function WorkingHours({todayHours, Hours}) {
       </TouchableOpacity>
       {hoursInfoOpen && (
         <View style={{paddingVertical: 5}}>
-          {Hours.Availabilities[0].Everyday ? (
+          {Hours.everyday ? (
             <View style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
               <Text>Ежедневно</Text>
-              <Text>{`${Hours.Availabilities[0].Intervals[0].from.slice(
-                0,
-                -3,
-              )} - ${Hours.Availabilities[0].Intervals[0].to.slice(
-                0,
-                -3,
-              )}`}</Text>
+              <Text>{Hours.everyday}</Text>
             </View>
           ) : (
-            Hours.Availabilities.map((item, index) => (
-              <View style={{width: '100%'}} key={index}>
-                {item.Monday && (
-                  <View
-                    style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
-                    <Text>Понедельник</Text>
-                    <Text>{`${item.Intervals[0].from.slice(
-                      0,
-                      -3,
-                    )} - ${item.Intervals[0].to.slice(0, -3)}`}</Text>
-                  </View>
-                )}
-                {item.Tuesday && (
-                  <View
-                    style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
-                    <Text>Вторник</Text>
-                    <Text>{`${item.Intervals[0].from.slice(
-                      0,
-                      -3,
-                    )} - ${item.Intervals[0].to.slice(0, -3)}`}</Text>
-                  </View>
-                )}
-                {item.Wednesday && (
-                  <View
-                    style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
-                    <Text>Среда</Text>
-                    <Text>{`${item.Intervals[0].from.slice(
-                      0,
-                      -3,
-                    )} - ${item.Intervals[0].to.slice(0, -3)}`}</Text>
-                  </View>
-                )}
-                {item.Thursday && (
-                  <View
-                    style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
-                    <Text>Четверг</Text>
-                    <Text>{`${item.Intervals[0].from.slice(
-                      0,
-                      -3,
-                    )} - ${item.Intervals[0].to.slice(0, -3)}`}</Text>
-                  </View>
-                )}
-                {item.Friday && (
-                  <View
-                    style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
-                    <Text>Пятница</Text>
-                    <Text>{`${item.Intervals[0].from.slice(
-                      0,
-                      -3,
-                    )} - ${item.Intervals[0].to.slice(0, -3)}`}</Text>
-                  </View>
-                )}
-                {item.Saturday && (
-                  <View
-                    style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
-                    <Text>Суббота</Text>
-                    <Text>{`${item.Intervals[0].from.slice(
-                      0,
-                      -3,
-                    )} - ${item.Intervals[0].to.slice(0, -3)}`}</Text>
-                  </View>
-                )}
-                {item.Sunday && (
-                  <View
-                    style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
-                    <Text>Воскресенье</Text>
-                    <Text>{`${item.Intervals[0].from.slice(
-                      0,
-                      -3,
-                    )} - ${item.Intervals[0].to.slice(0, -3)}`}</Text>
-                  </View>
-                )}
-              </View>
-            ))
+            <View style={{width: '100%'}}>
+              {Hours.monday && (
+                <View
+                  style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
+                  <Text>Понедельник</Text>
+                  <Text>{Hours.monday}</Text>
+                </View>
+              )}
+              {Hours.tuesday && (
+                <View
+                  style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
+                  <Text>Вторник</Text>
+                  <Text>{Hours.tuesday}</Text>
+                </View>
+              )}
+              {Hours.wednesday && (
+                <View
+                  style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
+                  <Text>Среда</Text>
+                  <Text>{Hours.wednesday}</Text>
+                </View>
+              )}
+              {Hours.thursday && (
+                <View
+                  style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
+                  <Text>Четверг</Text>
+                  <Text>{Hours.thursday}</Text>
+                </View>
+              )}
+              {Hours.friday && (
+                <View
+                  style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
+                  <Text>Пятница</Text>
+                  <Text>{Hours.friday}</Text>
+                </View>
+              )}
+              {Hours.saturday && (
+                <View
+                  style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
+                  <Text>Суббота</Text>
+                  <Text>{Hours.saturday}</Text>
+                </View>
+              )}
+              {Hours.sunday && (
+                <View
+                  style={[globalStyles.flexRow, globalStyles.justifyBetween]}>
+                  <Text>Воскресенье</Text>
+                  <Text>{Hours.sunday}</Text>
+                </View>
+              )}
+            </View>
           )}
         </View>
       )}

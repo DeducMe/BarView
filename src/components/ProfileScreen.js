@@ -10,8 +10,8 @@ import {
 import {Geocoder} from 'react-native-yamap';
 import {PLUS, MINUS, MARKER} from '../images';
 import MapView, {Marker} from 'react-native-maps';
-import markersData from '../dataTest.json';
 import RNFS from 'react-native-fs';
+import {getOrganizationCoords} from '../api/apiQueries';
 // Geocoder.geoToAddress({ lat: 37.597576, lon: 55.771899 })
 //   .then(data => console.log(data))
 const path = '/Users/alexanderzakalsky/projects/Bar/front';
@@ -23,7 +23,6 @@ const route = {
 
 export default function ProfileScreen({navigation}) {
   const [markers, setMarkers] = useState([]);
-  const [writeResult, setWriteResult] = useState([]);
   const [chosenId, setChosenId] = useState(121926463456);
   const [markersLoading, setMarkersLoading] = useState(false);
 
@@ -39,13 +38,6 @@ export default function ProfileScreen({navigation}) {
         0,
       );
     readOrganizationsJSON();
-    // let newWr = [];
-    // for (let index = 0; index < 4; index++) {
-    //   const a = await getOrganizationsJSON(index);
-    //   newWr = newWr.concat(a);
-    //   console.log(newWr);
-    // }
-    // setWriteResult(newWr);
   }, []);
 
   useEffect(() => {
@@ -53,7 +45,6 @@ export default function ProfileScreen({navigation}) {
   }, [markers]);
 
   function addNewOrganizationMarker(organization) {
-    // console.log(organization)
     setMarkers(markers.concat(organization));
   }
 
@@ -67,61 +58,32 @@ export default function ProfileScreen({navigation}) {
     });
   }
 
-  useEffect(() => {
-    if (writeResult.length === 0) return;
-    let json = JSON.stringify(writeResult, 0, 2);
-    RNFS.writeFile(`${path}/myjsonfile.json`, json, 'utf8')
-      .then(success => {
-        console.log('FILE WRITTEN!');
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, [writeResult]);
-
-  function getOrganizationsJSON(index) {
-    return fetch(
-      `https://search-maps.yandex.ru/v1/?text=Бар&type=biz&results=2000&skip=${
-        index * 500
-      }&lang=ru_RU&ll=37.6,55.7&spn=0.8,0.8&&apikey=c63cba92-1973-49ab-9c45-943c69b15467`,
-    )
-      .then(response => response.json())
-      .then(data => {
-        const wR = [];
-
-        data?.features?.map(item => {
-          wR.push(item);
-        });
-        return wR;
-      });
-  }
-
   function readOrganizationsJSON() {
-    getOrganizations(markersData);
-    console.log(markersData.length);
+    getOrganizationCoords().then(data => getOrganizations(data.rows));
   }
 
   function getOrganizations(data) {
     setMarkersLoading(true);
 
-    const result = [];
-
-    data.map(item => {
-      result.push({
-        info: item.properties.CompanyMetaData,
+    const result = data.map(item => {
+      return {
+        id: item.id,
+        name: item.name,
         coordinates: {
-          longitude: item.geometry.coordinates[0],
-          latitude: item.geometry.coordinates[1],
+          longitude: item.coordinatesx,
+          latitude: item.coordinatesy,
         },
-        id: item.properties.CompanyMetaData.id,
-      });
+      };
     });
 
     setMarkers(markers.concat(result));
   }
 
-  function openMarkerInfo(item) {
-    navigation.navigate('OrganizationScreen', {organization: item});
+  function openMarkerInfo(marker) {
+    navigation.navigate('OrganizationScreen', {
+      organizationId: marker.id,
+      name: marker.name,
+    });
   }
 
   async function onZoomPress(where) {
@@ -165,7 +127,8 @@ export default function ProfileScreen({navigation}) {
               image={MARKER}
               coordinate={item.coordinates}
               style={{width: 26, height: 28}}
-              key={index}></Marker>
+              key={index}
+            />
           ))}
       </MapView>
       {markersLoading && (

@@ -26,7 +26,7 @@ const App = () => {
           options={({route}) => ({
             header: navigation => (
               <OrganizationHeader
-                name={route.params.organization.info.name}
+                name={route.params.name}
                 navigation={navigation}
               />
             ),

@@ -1,25 +1,29 @@
 const weekDays = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
 ];
 
 export const getTodayHours = Hours => {
+  if (!Hours) return;
   let day = new Date().getDay();
-  if (day === 0) day = 7;
-  day -= 1;
-  const todayDayHours = Hours.Availabilities.find(item => item[weekDays[day]]);
+  if (day === 0) day = 6;
+  else day -= 1;
 
-  if (todayDayHours) return todayDayHours?.Intervals[0]?.to.slice(0, -3);
+  const todayDayHours = Hours[weekDays[day]];
+  console.log(todayDayHours);
+  if (!!todayDayHours && todayDayHours !== '')
+    return todayDayHours.slice(8, 13);
   else {
-    const everydayHours = Hours.Availabilities?.find(item => item['Everyday']);
-    if (everydayHours?.TwentyFourHours) return '24 hours';
-    if (!everydayHours?.Intervals) return null;
-
-    return everydayHours ? everydayHours.Intervals[0]?.to.slice(0, -3) : null;
+    // if (everydayHours?.TwentyFourHours) return '24 hours';
+    // if (!everydayHours?.Intervals) return null;
+    console.log(Hours['everyday']);
+    return !!Hours['everyday'] && Hours['everyday'] !== ''
+      ? Hours['everyday'].slice(8, 13)
+      : null;
   }
 };

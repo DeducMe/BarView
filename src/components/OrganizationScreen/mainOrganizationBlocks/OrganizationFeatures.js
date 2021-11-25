@@ -15,6 +15,7 @@ export default function OrganizationFeatures({features}) {
   const {menuFeatures, elseFeatures} = features;
 
   const normalizeFeatures = () => {
+    if (!menuFeatures) return;
     let normalizedMenuFeatures = menuFeatures.filter(
       (v, i, a) => a.findIndex(t => t === v) === i,
     );
@@ -35,12 +36,13 @@ export default function OrganizationFeatures({features}) {
         return a > b ? 1 : -1;
       })
       .map(item => {
-        const splitted = item.split(':');
+        if (!item) return null;
 
+        const splitted = item.split(':');
         return {
           key: splitted[0],
           value: splitted[1],
-          long: splitted[1].length > 20 || splitted[0].length > 20,
+          long: splitted[1]?.length > 20 || splitted[0]?.length > 20,
         };
       });
 
@@ -71,9 +73,10 @@ export default function OrganizationFeatures({features}) {
         ]}>
         <View style={styles.normalizedMenuFeaturesContainer}>
           {normalizedFeatures.normalizedMenuFeatures.map((item, i) => {
-            if ((i >= 4 && !menuFeaturesOpen) || item.long) return;
+            if ((i >= 4 && !menuFeaturesOpen) || item?.long || !item) return;
             return (
               <View
+                key={i}
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',

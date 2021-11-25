@@ -18,7 +18,7 @@ export default function StarBlock({rating}) {
         maskElement={
           <View
             style={{
-              width: 19 * parseFloat(rating?.replace(',', '.')),
+              width: 19 * rating,
               height: 19,
               backgroundColor: '#fff',
             }}></View>
