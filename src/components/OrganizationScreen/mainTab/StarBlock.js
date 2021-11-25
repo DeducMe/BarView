@@ -6,7 +6,7 @@ import {
 } from '../../../images/index';
 import MaskedView from '@react-native-masked-view/masked-view';
 import globalStyles, {mainInfo as styles} from '../styles';
-export default function StarBlock({rating}) {
+export default function StarBlock({rating, noNumber}) {
   return (
     <View
       style={[
@@ -38,7 +38,7 @@ export default function StarBlock({rating}) {
         <Image style={styles.starIcon} source={starEmpty}></Image>
         <Image style={styles.starIcon} source={starEmpty}></Image>
       </View>
-      <Text style={styles.ratingText}>{rating}</Text>
+      {!noNumber && <Text style={styles.ratingText}>{rating}</Text>}
     </View>
   );
 }

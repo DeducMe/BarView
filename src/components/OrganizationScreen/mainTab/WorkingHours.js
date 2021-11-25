@@ -7,7 +7,6 @@ import {
 } from '../../../images/index';
 export default function WorkingHours({todayHours, Hours}) {
   const [hoursInfoOpen, setHoursInfoOpen] = useState(false);
-  console.log(Hours);
   return (
     <View style={{marginBottom: 10}}>
       <TouchableOpacity

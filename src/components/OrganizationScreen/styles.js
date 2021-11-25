@@ -133,7 +133,7 @@ export const organizationFeatures = StyleSheet.create({
 });
 export const navigationTabs = StyleSheet.create({
   navigationTabBtn: {
-    width: 120,
+    width: 110,
     backgroundColor: '#F4F4F4',
     padding: 10,
     borderRadius: 5,
@@ -141,5 +141,42 @@ export const navigationTabs = StyleSheet.create({
   navigationTabText: {
     textAlign: 'center',
     fontWeight: '500',
+  },
+});
+
+export const reviewsTabStyles = StyleSheet.create({
+  reviewsContainer: {
+    marginHorizontal: 10,
+  },
+  commonInfoReviews: {
+    marginTop: 10,
+    width: '100%',
+    backgroundColor: '#F4F4F4',
+    padding: 10,
+    borderRadius: 5,
+  },
+  bigStarIcon: {
+    width: 40,
+    height: 40,
+  },
+  ratingText: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '600',
+    width: 40,
+  },
+  reviewCategoryContainer: {
+    marginLeft: 15,
+    marginBottom: 10,
+  },
+  reviewCategoryTitle: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  reviewContainer: {
+    marginTop: 15,
+  },
+  reviewBody: {
+    marginTop: 3,
   },
 });

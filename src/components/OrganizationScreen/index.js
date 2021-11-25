@@ -1,13 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import StarBlock from './mainOrganizationBlocks/StarBlock';
-import {getTodayHours} from '../../common/dateUtils';
-import OrganizationFeatures from './mainOrganizationBlocks/OrganizationFeatures';
-import WorkingHours from './mainOrganizationBlocks/WorkingHours';
-import MenuPopularBlock from './mainOrganizationBlocks/MenuPopularBlock';
+
 import OrganizationTabsBlock from './mainOrganizationBlocks/OrganizationTabsBlock';
 import EmptyTab from './mainOrganizationBlocks/EmptyTab';
 import {getOrganizationInfo} from '../../api/apiQueries';
+import ReviewsTab from './reviewsTab/index';
+import MainTab from './mainTab/index';
 
 import OrganizationPhotosCarousel from './mainOrganizationBlocks/OrganizationPhotosCarousel';
 
@@ -15,50 +12,64 @@ import globalStyles, {mainInfo as styles} from './styles';
 import {ScrollView} from 'react-native-gesture-handler';
 
 export default function OrganizationScreen({navigation, route}) {
-  const [fullAddressOpened, setFullAddressOpened] = useState(false);
   const [openedTab, setOpenedTab] = useState('Main');
   const [organization, setOrganization] = useState({});
+  const [normalizedReviews, setNormalizedReviews] = useState([]);
+  const [normalizedReviewsCategories, setNormalizedReviewsCategories] =
+    useState([]);
+
   const {
     organizationimages: organizationImages,
+    userreviews: userReviews,
+    reviewscategories: reviewsCategories,
     logo,
-    address,
     rating,
-    menupositions: menuPositions,
-    categories,
-    menufeatures: menuFeatures,
-    elsefeatures: elseFeatures,
   } = organization;
-  const Hours = {
-    everyday: organization.everyday,
-    monday: organization.monday,
-    tuesday: organization.tuesday,
-    wednesday: organization.wednesday,
-    thursday: organization.thursday,
-    friday: organization.friday,
-    saturday: organization.saturday,
-    sunday: organization.sunday,
-  };
+
+  function normalizeReviews() {
+    setNormalizedReviews(
+      userReviews.split('|').map(item => {
+        const splitted = item.split('=+=');
+        return {
+          review: splitted[0] === '' ? 'Без отзыва' : splitted[0],
+          author: splitted[1] === '' ? 'Аноним' : splitted[1],
+          stars: splitted[2] === '' ? 'Нет оценки' : splitted[2],
+        };
+      }),
+    );
+  }
+
+  function normalizeReviewsCategories() {
+    setNormalizedReviewsCategories(
+      reviewsCategories.split('|').map(item => {
+        const splitted = item.split('=+=');
+        return {
+          title: splitted[0],
+          reviewsAmount: splitted[1],
+          reviewsLinePositive: splitted[2],
+          reviewsLineNegative: splitted[3],
+        };
+      }),
+    );
+  }
+
   useEffect(() => {
     getOrganizationInfo(route.params.organizationId).then(data => {
-      console.log(data.rows[0]);
       if (!data.rows[0]) return;
       setOrganization(data.rows[0]);
     });
   }, []);
 
-  const getAddress = () => {
-    return address.replace('Россия,', '').replace('Москва,', '').trim();
-  };
+  useEffect(() => {
+    console.log(Object.values(organization).length);
+    if (userReviews) normalizeReviews();
+    if (reviewsCategories) normalizeReviewsCategories();
+  }, [organization]);
 
   const navigateToTab = tabName => {
     setOpenedTab(tabName);
   };
 
-  const todayHours = getTodayHours(Hours);
-  const features = {
-    menuFeatures: menuFeatures?.split('|'),
-    elseFeatures: elseFeatures?.split('|'),
-  };
   if (Object.keys(organization).length)
     return (
       <ScrollView
@@ -72,44 +83,17 @@ export default function OrganizationScreen({navigation, route}) {
         )}
         <OrganizationTabsBlock navigateToTab={navigateToTab} />
         {openedTab === 'Main' && (
-          <>
-            <View style={styles.mainInfoBlockContainer}>
-              <View style={styles.mainInfoBlockLeftContainer}>
-                <TouchableOpacity
-                  onPress={() => setFullAddressOpened(!fullAddressOpened)}>
-                  <Text
-                    numberOfLines={fullAddressOpened ? 3 : 1}
-                    ellipsizeMode="tail"
-                    style={styles.mainInfoBlockAddress}>
-                    {getAddress()}
-                  </Text>
-                </TouchableOpacity>
-                {!!Hours && (
-                  <WorkingHours
-                    todayHours={todayHours}
-                    Hours={Hours}></WorkingHours>
-                )}
-              </View>
-
-              <View style={styles.mainInfoBlockRightContainer}>
-                {rating && <StarBlock rating={rating} />}
-                <TouchableOpacity style={globalStyles.flexRow}>
-                  <Text style={{color: '#0082E0', marginRight: 5}}>Отзывы</Text>
-                  <Text style={{color: '#0082E0', opacity: 0.6}}>0</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            {!!features && (
-              <OrganizationFeatures features={features}></OrganizationFeatures>
-            )}
-            <View style={styles.blockSeparator} />
-            <MenuPopularBlock menuPositions={menuPositions} />
-          </>
+          <MainTab
+            rating={rating}
+            normalizedReviews={normalizedReviews}
+            organization={organization}></MainTab>
         )}
         {openedTab === 'Reviews' && (
-          <>
-            <EmptyTab></EmptyTab>
-          </>
+          <ReviewsTab
+            normalizedReviews={normalizedReviews}
+            rating={rating}
+            normalizedReviewsCategories={normalizedReviewsCategories}
+          />
         )}
         {openedTab === 'Menu' && (
           <>
