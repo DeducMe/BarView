@@ -5,7 +5,7 @@ import EmptyTab from './mainOrganizationBlocks/EmptyTab';
 import {getOrganizationInfo} from '../../api/apiQueries';
 import ReviewsTab from './reviewsTab/index';
 import MainTab from './mainTab/index';
-
+import MenuTab from './menuTab/index';
 import OrganizationPhotosCarousel from './mainOrganizationBlocks/OrganizationPhotosCarousel';
 
 import globalStyles, {mainInfo as styles} from './styles';
@@ -61,7 +61,6 @@ export default function OrganizationScreen({navigation, route}) {
   }, []);
 
   useEffect(() => {
-    console.log(Object.values(organization).length);
     if (userReviews) normalizeReviews();
     if (reviewsCategories) normalizeReviewsCategories();
   }, [organization]);
@@ -96,9 +95,7 @@ export default function OrganizationScreen({navigation, route}) {
           />
         )}
         {openedTab === 'Menu' && (
-          <>
-            <EmptyTab></EmptyTab>
-          </>
+          <MenuTab id={route.params.organizationId}></MenuTab>
         )}
       </ScrollView>
     );

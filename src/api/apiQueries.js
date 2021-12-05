@@ -9,6 +9,15 @@ export function getOrganizationInfo(id) {
   }).then(data => data.json());
 }
 
+export function getOrganizationMenu(id) {
+  return fetch(`${SITE}organization/menu/${id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+  }).then(data => data.json());
+}
+
 export function getOrganizationCoords() {
   console.log('getOrganizationCoords');
   return fetch(`${SITE}organization/coords`, {
@@ -36,7 +45,5 @@ function get() {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
-  })
-    .then(data => data.json())
-    .then(data => console.log(data));
+  }).then(data => data.json());
 }

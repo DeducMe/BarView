@@ -1,4 +1,5 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
+const {width} = Dimensions.get('window');
 
 export const mainInfo = StyleSheet.create({
   mainHeaderContainer: {
@@ -94,6 +95,9 @@ export const mainInfo = StyleSheet.create({
 });
 
 export default StyleSheet.create({
+  contentCenter: {
+    justifyContent: 'center',
+  },
   flexRow: {
     flexDirection: 'row',
   },
@@ -154,6 +158,12 @@ export const reviewsTabStyles = StyleSheet.create({
     backgroundColor: '#F4F4F4',
     padding: 10,
     borderRadius: 5,
+    marginBottom: 10,
+  },
+  bigStarBlock: {
+    height: '100%',
+    width: width - 320,
+    alignSelf: 'center',
   },
   bigStarIcon: {
     width: 40,
@@ -174,9 +184,50 @@ export const reviewsTabStyles = StyleSheet.create({
     fontWeight: '500',
   },
   reviewContainer: {
-    marginTop: 15,
+    marginBottom: 15,
   },
   reviewBody: {
     marginTop: 3,
+  },
+  reviewsAmountText: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  filterReviewsText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#0082E0',
+  },
+});
+
+export const menuTabStyles = StyleSheet.create({
+  menuContainer: {
+    flex: 1,
+    marginHorizontal: 10,
+  },
+  dishBlock: {
+    minHeight: 190,
+    width: '32%',
+  },
+  dishImage: {
+    borderRadius: 8,
+    width: '100%',
+    height: 150,
+  },
+  categoryHeader: {
+    fontSize: 18,
+    fontWeight: '500',
+  },
+  dishTitle: {
+    textAlign: 'center',
+  },
+  specialOfferImage: {
+    height: 150,
+    marginBottom: 15,
+  },
+  loader: {
+    height: 230,
   },
 });

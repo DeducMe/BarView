@@ -6,11 +6,14 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
+const {width} = Dimensions.get('window');
+
 import {Geocoder} from 'react-native-yamap';
 import {PLUS, MINUS, MARKER} from '../images';
-import MapView, {Marker} from 'react-native-maps';
-import RNFS from 'react-native-fs';
+import {Marker} from 'react-native-maps';
+import MapView from 'react-native-maps-super-cluster';
 import {getOrganizationCoords} from '../api/apiQueries';
 // Geocoder.geoToAddress({ lat: 37.597576, lon: 55.771899 })
 //   .then(data => console.log(data))
@@ -86,51 +89,87 @@ export default function ProfileScreen({navigation}) {
     });
   }
 
-  async function onZoomPress(where) {
+  async function onZoomPress(where, coordinates) {
     if (!map && !map.current) {
       return;
     }
 
-    const camera = await map.current.getCamera();
-    if (where === 'in') {
-      if (Platform.OS === 'ios') {
-        camera.altitude /= 2;
-      } else {
-        camera.zoom = camera.zoom + 1;
-      }
-    } else {
-      if (Platform.OS === 'ios') {
-        camera.altitude *= 2;
-      } else {
-        camera.zoom = camera.zoom - 1;
-      }
+    if (coordinates) {
+      const moveCamera = await map.current.mapview.getCamera();
+      moveCamera.center = coordinates;
+
+      await map.current.mapview.animateToRegion(
+        {
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+        },
+        200,
+      );
     }
-    map.current.animateCamera(camera, {duration: 200});
+    setTimeout(async () => {
+      const camera = await map.current.mapview.getCamera();
+      if (where === 'in') {
+        if (Platform.OS === 'ios') {
+          camera.altitude /= 2;
+        } else {
+          camera.zoom = camera.zoom + 1;
+        }
+      } else {
+        if (Platform.OS === 'ios') {
+          camera.altitude *= 2;
+        } else {
+          camera.zoom = camera.zoom - 1;
+        }
+      }
+
+      await map.current.mapview.animateCamera(camera, {duration: 200});
+    }, 300);
   }
   return (
     <View style={{flex: 1, width: '100%', height: '100%'}}>
       <MapView
         ref={map}
         fitAllMarkers
+        showsUserLocation={true}
         zoomEnabled={true}
+        data={markers}
+        accessor={'coordinates'}
+        radius={width * 0.08}
+        renderMarker={(item, index) => (
+          <Marker
+            key={index}
+            onPress={openMarkerInfo.bind(this, item)}
+            image={MARKER}
+            coordinate={item.coordinates}
+            style={{width: 26, height: 28}}
+          />
+        )}
+        renderCluster={(item, index) => (
+          <Marker
+            key={index}
+            coordinate={item.coordinate}
+            onPress={() => onZoomPress('in', item.coordinate)}>
+            <View
+              style={{
+                borderRadius: 25,
+                width: item.pointCount > 20 ? 42 : 28,
+                height: item.pointCount > 20 ? 42 : 28,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#fff',
+              }}>
+              <Text>{item.pointCount}</Text>
+            </View>
+          </Marker>
+        )}
         initialRegion={{
           latitude: 55.746953111304435,
           longitude: 37.615575661165195,
           latitudeDelta: 0.5,
           longitudeDelta: 0.5,
         }}
-        style={{flex: 1, width: '100%', height: '100%'}}>
-        {!markersLoading &&
-          markers.map((item, index) => (
-            <Marker
-              onPress={openMarkerInfo.bind(this, item)}
-              image={MARKER}
-              coordinate={item.coordinates}
-              style={{width: 26, height: 28}}
-              key={index}
-            />
-          ))}
-      </MapView>
+        style={{flex: 1, width: '100%', height: '100%'}}
+      />
       {markersLoading && (
         <View
           style={{
