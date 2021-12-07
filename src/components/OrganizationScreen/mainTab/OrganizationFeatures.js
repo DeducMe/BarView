@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Image} from 'react-native';
-import globalStyles, {organizationFeatures as styles} from '../styles';
+import globalStyles, {organizationFeatures as styles} from '../../styles';
 import {
   WIFI as wifiIcon,
   CARD_PAYMENT as cardPaymentIcon,

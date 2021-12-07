@@ -1,5 +1,9 @@
 export const MINUS = require('./minus.png');
 export const PLUS = require('./plus.png');
+export const CLOSE = require('./close.png');
+
+export const SEARCH = require('./search.png');
+
 export const MARKER = require('./MarkerIcon.png');
 export const STAR_FULL = require('./starFull.png');
 export const STAR_EMPTY = require('./starEmpty.png');
@@ -19,3 +23,4 @@ export const BUSINESS_LUNCH = require('./smallIcons/lunch.png');
 
 export const WORK_IN_PROGRESS = require('./bigIcons/workInProgress.png');
 export const DISH = require('./bigIcons/dish.png');
+export const SAD_FACE = require('./bigIcons/sad.png');

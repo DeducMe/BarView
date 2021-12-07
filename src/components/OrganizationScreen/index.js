@@ -8,7 +8,7 @@ import MainTab from './mainTab/index';
 import MenuTab from './menuTab/index';
 import OrganizationPhotosCarousel from './mainOrganizationBlocks/OrganizationPhotosCarousel';
 
-import globalStyles, {mainInfo as styles} from './styles';
+import globalStyles, {mainInfo as styles} from '../styles';
 import {ScrollView} from 'react-native-gesture-handler';
 
 export default function OrganizationScreen({navigation, route}) {

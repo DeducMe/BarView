@@ -9,13 +9,15 @@ import {
 } from 'react-native';
 import {getOrganizationMenu} from '../../../api/apiQueries';
 import StarBlock from '../mainTab/StarBlock';
-import MaskedView from '@react-native-masked-view/masked-view';
 import {
   BIG_STAR_FULL as starFull,
   BIG_STAR_EMPTY as starEmpty,
   DISH as dishIcon,
+  SAD_FACE as sadFace,
 } from '../../../images/index';
-import globalStyles, {menuTabStyles as styles} from '../styles';
+import globalStyles, {menuTabStyles as styles} from '../../styles';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import FastImage from 'react-native-fast-image';
 
 export default function MenuTab({id}) {
   const [menuPositions, setMenuPositions] = useState([]);
@@ -29,9 +31,12 @@ export default function MenuTab({id}) {
   };
 
   function normalizeMenuPositions(data) {
-    const sectionData = data.map(item => {
-      return {title: item.category, data: [item.dishes.split('=+=')]};
-    });
+    const sectionData = data.reduce((accum, item) => {
+      if (item.dishes?.length !== 0)
+        accum.push({title: item.category, data: item.dishes.split('=+=')});
+      return accum;
+    }, []);
+    console.log(sectionData);
     setMenuPositions(sectionData);
     setMenuLoaded(true);
   }
@@ -43,19 +48,40 @@ export default function MenuTab({id}) {
   }, []);
 
   function renderDish({item, index}) {
+    if (item.length === 0) return null;
     const splitted = item.split('|');
-
     return (
       <View
         style={[styles.dishBlock, {marginLeft: index % 3 !== 0 ? '2%' : 0}]}>
-        <Image
-          style={styles.dishImage}
-          source={{
-            uri: splitted[1] === 'empty' ? dishIcon : splitted[1],
-          }}
-        />
+        <TouchableOpacity>
+          <View>
+            {splitted[1] !== 'empty' ? (
+              <Image
+                style={styles.dishImage}
+                source={{
+                  uri: splitted[1],
+                }}
+              />
+            ) : (
+              <View
+                style={[
+                  styles.dishImage,
+                  globalStyles.alignCenter,
+                  globalStyles.justifyCenter,
+                  {backgroundColor: '#F4F4F4'},
+                ]}>
+                <Image style={{height: 40, width: 40}} source={dishIcon} />
+              </View>
+            )}
 
-        <Text style={styles.dishTitle}>{splitted[0]}</Text>
+            <View style={styles.menuPriceBlock}>
+              <Text>{splitted[3]}</Text>
+            </View>
+          </View>
+          <Text numberOfLines={2} ellipsizeMode="tail" style={styles.dishTitle}>
+            {splitted[0]}
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -64,34 +90,57 @@ export default function MenuTab({id}) {
     <View style={styles.menuContainer}>
       {menuPositions.length === 0 && !menuLoaded && (
         <View style={globalStyles.contentCenter}>
-          <ActivityIndicator style={styles.loader}></ActivityIndicator>
+          <ActivityIndicator style={styles.loader} size={'large'} />
         </View>
       )}
-      {menuPositions && (
-        <SectionList
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={[globalStyles.justifyBetween, {width: '100%'}]}
-          keyExtractor={(item, index) => index}
-          renderSectionHeader={({section: {title}}) => (
+
+      <SectionList
+        ListEmptyComponent={() =>
+          menuLoaded ? (
+            <View style={styles.bigInfoBlock}>
+              <FastImage style={globalStyles.bigIcon} source={sadFace} />
+              <Text style={styles.bigInfoBlockText}>
+                Владелец пока не добавил меню...
+              </Text>
+            </View>
+          ) : null
+        }
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={[
+          globalStyles.justifyBetween,
+          {
+            width: '100%',
+            marginTop: 10,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap',
+          },
+        ]}
+        keyExtractor={(item, index) => index}
+        renderSectionHeader={({section: {title, data}}) => {
+          return data[0]?.length > 0 ? (
             <Text style={styles.categoryHeader}>{title}</Text>
-          )}
-          sections={menuPositions}
-          renderItem={props => {
-            return (
-              <FlatList
-                numColumns={3}
-                contentContainerStyle={[
-                  globalStyles.justifyBetween,
-                  {width: '100%'},
-                ]}
-                data={props.item}
-                renderItem={renderDish}
-                keyExtractor={(item, index) => index}
-              />
-            );
-          }}
-        />
-      )}
+          ) : null;
+        }}
+        sections={menuPositions}
+        renderItem={renderDish}
+      />
+
+      {/* props => {
+          return (
+            <FlatList
+              numColumns={3} // cамый легкий варианты использования numColumns, но совсем не самый производительный
+              contentContainerStyle={[
+                globalStyles.justifyBetween,
+                {width: '100%', marginBottom: 10},
+              ]}
+              data={props.item}
+              renderItem={renderDish}
+              keyExtractor={(item, index) => index}
+            />
+          );
+        } */}
     </View>
   );
 }

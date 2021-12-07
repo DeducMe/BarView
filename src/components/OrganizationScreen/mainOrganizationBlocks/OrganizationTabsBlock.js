@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, FlatList} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import globalStyles, {navigationTabs as styles} from '../styles';
+import globalStyles, {navigationTabs as styles} from '../../styles';
 
 export default function OrganizationTabsBlock({navigateToTab}) {
   const renderItem = ({item}) => {

@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, Image, Text, FlatList, TouchableOpacity} from 'react-native';
-import globalStyles, {reviewsTabStyles as styles} from '../styles';
+import globalStyles, {reviewsTabStyles as styles} from '../../styles';
 import StarBlock from '../mainTab/StarBlock';
 import MaskedView from '@react-native-masked-view/masked-view';
+
 import {
   BIG_STAR_FULL as starFull,
   BIG_STAR_EMPTY as starEmpty,

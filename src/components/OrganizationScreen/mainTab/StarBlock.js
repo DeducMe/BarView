@@ -4,8 +4,9 @@ import {
   STAR_FULL as starFull,
   STAR_EMPTY as starEmpty,
 } from '../../../images/index';
+import FastImage from 'react-native-fast-image';
 import MaskedView from '@react-native-masked-view/masked-view';
-import globalStyles, {mainInfo as styles} from '../styles';
+import globalStyles, {mainInfo as styles} from '../../styles';
 export default function StarBlock({rating, noNumber}) {
   return (
     <View
@@ -21,22 +22,23 @@ export default function StarBlock({rating, noNumber}) {
               width: 19 * rating,
               height: 19,
               backgroundColor: '#fff',
-            }}></View>
+            }}
+          />
         }>
         <View style={globalStyles.flexRow}>
-          <Image style={styles.starIcon} source={starFull}></Image>
-          <Image style={styles.starIcon} source={starFull}></Image>
-          <Image style={styles.starIcon} source={starFull}></Image>
-          <Image style={styles.starIcon} source={starFull}></Image>
-          <Image style={styles.starIcon} source={starFull}></Image>
+          <FastImage style={styles.starIcon} source={starFull} />
+          <FastImage style={styles.starIcon} source={starFull} />
+          <FastImage style={styles.starIcon} source={starFull} />
+          <FastImage style={styles.starIcon} source={starFull} />
+          <FastImage style={styles.starIcon} source={starFull} />
         </View>
       </MaskedView>
       <View style={[globalStyles.flexRow, {position: 'absolute'}]}>
-        <Image style={styles.starIcon} source={starEmpty}></Image>
-        <Image style={styles.starIcon} source={starEmpty}></Image>
-        <Image style={styles.starIcon} source={starEmpty}></Image>
-        <Image style={styles.starIcon} source={starEmpty}></Image>
-        <Image style={styles.starIcon} source={starEmpty}></Image>
+        <FastImage style={styles.starIcon} source={starEmpty} />
+        <FastImage style={styles.starIcon} source={starEmpty} />
+        <FastImage style={styles.starIcon} source={starEmpty} />
+        <FastImage style={styles.starIcon} source={starEmpty} />
+        <FastImage style={styles.starIcon} source={starEmpty} />
       </View>
       {!noNumber && <Text style={styles.ratingText}>{rating}</Text>}
     </View>

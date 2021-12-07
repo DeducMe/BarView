@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {SafeAreaView, Image, TouchableOpacity, View, Text} from 'react-native';
+import {SafeAreaView, TouchableOpacity, View, Text, Image} from 'react-native';
+
 import {GO_BACK as goBackIcon} from '../../images/index';
-import {mainInfo as styles} from './styles';
+import {mainInfo as styles} from '../styles';
 import {
   STAR_FULL as starFull,
   STAR_EMPTY as starEmpty,

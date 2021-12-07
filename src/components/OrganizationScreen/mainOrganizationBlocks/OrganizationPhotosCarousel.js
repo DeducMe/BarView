@@ -7,7 +7,7 @@ import {
   Image,
 } from 'react-native';
 import {FULLSCREEN_BTN as fullScreenBtnIcon} from '../../../images/index';
-import {mainInfo as styles} from '../styles';
+import {mainInfo as styles} from '../../styles';
 const {width} = Dimensions.get('window');
 
 export default function OrganizationPhotosCarousel({organizationImages, logo}) {

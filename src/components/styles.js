@@ -104,9 +104,13 @@ export default StyleSheet.create({
   justifyBetween: {
     justifyContent: 'space-between',
   },
+  justifyCenter: {
+    justifyContent: 'center',
+  },
   alignCenter: {
     alignItems: 'center',
   },
+  bigIcon: {width: 100, height: 100},
 });
 
 export const organizationFeatures = StyleSheet.create({
@@ -208,8 +212,11 @@ export const menuTabStyles = StyleSheet.create({
     marginHorizontal: 10,
   },
   dishBlock: {
+    alignSelf: 'center',
+
     minHeight: 190,
-    width: '32%',
+    width: (width - 20) * 0.32,
+    marginBottom: 10,
   },
   dishImage: {
     borderRadius: 8,
@@ -217,11 +224,14 @@ export const menuTabStyles = StyleSheet.create({
     height: 150,
   },
   categoryHeader: {
+    width: width - 20,
+    marginVertical: 10,
     fontSize: 18,
     fontWeight: '500',
   },
   dishTitle: {
-    textAlign: 'center',
+    paddingVertical: 3,
+    paddingHorizontal: 6,
   },
   specialOfferImage: {
     height: 150,
@@ -229,5 +239,26 @@ export const menuTabStyles = StyleSheet.create({
   },
   loader: {
     height: 230,
+  },
+  menuPriceBlock: {
+    position: 'absolute',
+    borderRadius: 8,
+    bottom: 5,
+    left: 5,
+    paddingHorizontal: 5,
+    paddingVertical: 3,
+    backgroundColor: 'yellow',
+  },
+  bigInfoBlock: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 230,
+    width: '100%',
+  },
+  bigInfoBlockText: {
+    width: 200,
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 15,
   },
 });

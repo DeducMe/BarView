@@ -6,7 +6,7 @@ import {getTodayHours} from '../../../common/dateUtils';
 import OrganizationFeatures from './OrganizationFeatures';
 import WorkingHours from './WorkingHours';
 import MenuPopularBlock from './MenuPopularBlock';
-import globalStyles, {mainInfo as styles} from '../styles';
+import globalStyles, {mainInfo as styles} from '../../styles';
 
 export default function mainTab({organization}) {
   const [fullAddressOpened, setFullAddressOpened] = useState(false);

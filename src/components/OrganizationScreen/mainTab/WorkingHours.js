@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import globalStyles, {mainInfo as styles} from '../styles';
+import globalStyles, {mainInfo as styles} from '../../styles';
 import {
   OPEN_MENU_BTN as openMenuBtn,
   REVERSED_OPEN_MENU_BTN as reversedOpenMenuBtn,
