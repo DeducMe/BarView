@@ -59,3 +59,4 @@ buck-out/
 /ios/Pods/
 dataTest.json
 save.json
+android/app/release
